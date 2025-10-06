@@ -14,6 +14,11 @@ const App = () => {
             Order your favourite food!
           </figcaption>
         </figure>
+        <div className='user-profile'>
+          <Link to="/user">
+            <img src='/images/users/alice.png' alt='User profile' />
+          </Link>
+        </div>
       </header>
       <ul className='products'>
         {products.map((product) => (
