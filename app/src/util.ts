@@ -1,3 +1,5 @@
+import Fuse from "fuse.js";
+
 const data = [
     {
         id: "1",
@@ -45,6 +47,16 @@ const data = [
     },
 ];
 
+const users = [
+    {
+        id: "1",
+        name: "Sophia Patel",
+        email: "sophiapatel@gmail.com",
+        avatar: "/images/users/alice.png",
+        address: "123 Main St Apartment 4A, New York, NY",
+    },
+]
+
 export default data;
 
 export const getProducts = () => {
@@ -53,6 +65,10 @@ export const getProducts = () => {
 
 export const getProduct = (productId: string) => {
     return data.find(product => product.id === productId);
+}
+
+export const getCurrentUser = () => {
+    return users[0];
 }
 
 export type Product = {
@@ -64,4 +80,22 @@ export type Product = {
     image: string;
     description: string;
     spice: number;
+}
+
+export type User = {
+    id: string;
+    name: string;
+    email: string;
+    avatar: string;
+    address?: string;
+}
+
+export const ProductSearch = new Fuse(data, {
+    keys: ["name", "summary"],
+    includeScore: true,
+    threshold: 0.4,
+});
+
+export const searchProducts = (query: string) => {
+    return ProductSearch.search(query);
 }
