@@ -1,33 +1,44 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Link, useLoaderData } from 'react-router';
+import { Heart, Star } from 'lucide-react';
+import { type Product } from './util';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const products = useLoaderData() as Product[];
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <header>
+        <figure>
+          <img src='/logo.png' alt='logo' />
+          <figcaption>
+            Order your favourite food!
+          </figcaption>
+        </figure>
+      </header>
+      <ul className='products'>
+        {products.map((product) => (
+          <li key={product.id}>
+            <article className='product-card'>
+              <Link to={`/products/${product.id}`}>
+                <figure>
+                  <img src={product.image} alt={product.name} />
+                  <figcaption>
+                    <h2>{product.name}</h2>
+                    <p>{product.summary}</p>
+                  </figcaption>
+                </figure>
+                <p className='rating'>
+                  <div className="rating-container">
+                    <Star stroke="#FF9633" fill="#FF9633" />
+                    {product.rating}
+                  </div>
+                  <Heart stroke="#EF2A39" />
+                </p>
+              </Link>
+            </article>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

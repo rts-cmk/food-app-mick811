@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import { getProduct } from "./util";
+import { getProduct, getProducts, type Product } from "./util";
 
 import './index.css'
 
@@ -12,14 +12,21 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    loader: () => {
+      const products = getProducts() as Product[];
+      if(!products) {
+        throw new Response("Not Found", { status: 404 });
+      }
+      return products;
+    }
   },
   {
     path: "/products/:productId",
     element: <ProductDetail />,
     loader: ({ params }) => {
-      const product = getProduct(params.productId!);
+      const product = getProduct(params.productId!) as Product;
       if (!product) {
-        return <div>Product not found</div>;
+        throw new Response("Not Found", { status: 404 });
       }
       return product;
     }

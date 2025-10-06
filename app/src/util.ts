@@ -1,8 +1,8 @@
 const data = [
     {
         id: "1",
-        name: "CheeseBurger",
-        summary: "Wendy's burger",
+        name: "Cheeseburger",
+        summary: "Wendy's Burger",
         price: 8.24,
         rating: 4.9,
         image: "/images/wendys_burger.png",
@@ -12,7 +12,7 @@ const data = [
     {
         id: "2",
         name: "Hamburger",
-        summary: "Veggie burger",
+        summary: "Veggie Burger",
         price: 10.75,
         rating: 4.8,
         image: "/images/veggie_burger.png",
@@ -22,7 +22,7 @@ const data = [
     {
         id: "3",
         name: "Hamburger",
-        summary: "Chicken burger",
+        summary: "Chicken Burger",
         price: 11.30,
         rating: 4.6,
         image: "/images/chicken_burger.png",
@@ -32,7 +32,7 @@ const data = [
     {
         id: "4",
         name: "Hamburger",
-        summary: "Fried Chicken burger",
+        summary: "Fried Chicken Burger",
         price: 9.95,
         rating: 4.5,
         image: "/images/fried_chicken_burger.png",
@@ -49,4 +49,14 @@ export const getProducts = () => {
 
 export const getProduct = (productId: string) => {
     return data.find(product => product.id === productId);
+}
+
+export type Product = {
+    id: string;
+    name: string;
+    summary: string;
+    price: number;
+    rating: number;
+    image: string;
+    description: string;
 }
