@@ -1,5 +1,5 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { ArrowLeft, Settings, Edit, LogOut } from "lucide-react";
+import { ArrowLeft, Settings, PenSquare, LogOut } from "lucide-react";
 import { type User } from "./util";
 
 export default function UserProfile() {
@@ -11,39 +11,90 @@ export default function UserProfile() {
     };
 
     const handleEditProfile = () => {
-        console.log("Edit profile");
+        console.log("Edit profile clicked");
     };
 
     const handleLogout = () => {
-        console.log("Logout");
+        console.log("Logout clicked");
+        navigate("/");
     };
 
     return (
         <div className="user-profile-page">
             <div className="user-header">
-                <button 
-                    onClick={handleBack} 
+                <button
+                    onClick={handleBack}
                     className="user-back-btn"
                     aria-label="Go back"
                 >
-                    <ArrowLeft size={32} strokeWidth={3} />
+                    <ArrowLeft size={32} />
                 </button>
 
-                <img 
-                    src="/images/veggie_burger.png" 
-                    alt="decoration" 
+                <img
+                    src="/images/veggie_burger.png"
+                    alt="decoration"
                     className="burger-left"
                 />
 
                 <button className="user-settings-btn" aria-label="Settings">
-                    <Settings size={32} strokeWidth={2.5} />
+                    <Settings size={32} />
                 </button>
 
-                <img 
-                    src="/images/veggie_burger.png" 
-                    alt="decoration" 
+                <img
+                    src="/images/veggie_burger.png"
+                    alt="decoration"
                     className="burger-right"
                 />
+
+                <div className="user-avatar-container" aria-hidden={user ? "false" : "true"}>
+                    <img
+                        src={user.avatar ?? "/images/users/alice.png"}
+                        alt={user.name ? `${user.name} avatar` : "User avatar"}
+                        className="user-avatar"
+                    />
+                </div>
+            </div>
+
+            <div className="user-info">
+                <fieldset className="form-group">
+                    <legend>Name</legend>
+                    <div className="value">{user?.name || ""}</div>
+                </fieldset>
+
+                <fieldset className="form-group">
+                    <legend>Email</legend>
+                    <div className="value">{user?.email || ""}</div>
+                </fieldset>
+
+                <fieldset className="form-group">
+                    <legend>Delivery address</legend>
+                    <div className="value">{user?.address || ""}</div>
+                </fieldset>
+
+                <fieldset className="form-group">
+                    <legend>Password</legend>
+                    <div className="value password-dots">{"●".repeat(user?.password?.length || 8)}</div>
+                </fieldset>
+
+                <div className="user-actions">
+                    <button 
+                        onClick={handleEditProfile}
+                        className="edit-profile-btn"
+                        aria-label="Edit profile"
+                    >
+                        Edit Profile
+                        <PenSquare size={20} />
+                    </button>
+
+                    <button 
+                        onClick={handleLogout}
+                        className="logout-btn"
+                        aria-label="Log out"
+                    >
+                        Log out
+                        <LogOut size={20} />
+                    </button>
+                </div>
             </div>
         </div>
     );

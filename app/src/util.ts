@@ -54,6 +54,7 @@ const users = [
         email: "sophiapatel@gmail.com",
         avatar: "/images/users/alice.png",
         address: "123 Main St Apartment 4A, New York, NY",
+        password: "sophiapass",
     },
 ]
 
@@ -88,6 +89,7 @@ export type User = {
     email: string;
     avatar: string;
     address?: string;
+    password: string;
 }
 
 export const ProductSearch = new Fuse(data, {
