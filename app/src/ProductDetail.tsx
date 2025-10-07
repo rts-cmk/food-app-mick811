@@ -2,11 +2,13 @@ import { useLoaderData, useNavigate } from "react-router";
 import type { Product } from "./util";
 import { Star, Minus, Plus, ArrowLeft, Search } from "lucide-react";
 import { useState } from "react";
+import SearchOverlay from "./SearchOverlay";
 
 export default function ProductDetail() {
     const product = useLoaderData() as Product;
     const navigate = useNavigate();
     const [portionCount, setPortionCount] = useState(1);
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const handleIncrement = () => {
         setPortionCount(prev => prev + 1);
@@ -20,14 +22,19 @@ export default function ProductDetail() {
         navigate(-1);
     };
 
+    const handleSearchToggle = () => {
+        setIsSearchOpen(!isSearchOpen);
+    };
+
     return (
         <>
+            <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <main className="product-detail-container">
                 <header className="product-detail-header">
                     <button onClick={handleBack} aria-label="Go back">
                         <ArrowLeft size={24} />
                     </button>
-                    <button aria-label="Search">
+                    <button onClick={handleSearchToggle} aria-label="Search">
                         <Search size={24} />
                     </button>
                 </header>

@@ -1,10 +1,13 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { ArrowLeft, Settings, PenSquare, LogOut } from "lucide-react";
+import { ArrowLeft, Settings, PenSquare, LogOut, Search } from "lucide-react";
 import { type User } from "./util";
+import { useState } from "react";
+import SearchOverlay from "./SearchOverlay";
 
 export default function UserProfile() {
     const user = useLoaderData() as User;
     const navigate = useNavigate();
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     const handleBack = () => {
         navigate(-1);
@@ -19,8 +22,13 @@ export default function UserProfile() {
         navigate("/");
     };
 
+    const handleSearchToggle = () => {
+        setIsSearchOpen(!isSearchOpen);
+    };
+
     return (
         <div className="user-profile-page">
+            <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             <div className="user-header">
                 <button
                     onClick={handleBack}
@@ -35,6 +43,10 @@ export default function UserProfile() {
                     alt="decoration"
                     className="burger-left"
                 />
+
+                <button onClick={handleSearchToggle} className="user-search-btn" aria-label="Search">
+                    <Search size={28} />
+                </button>
 
                 <button className="user-settings-btn" aria-label="Settings">
                     <Settings size={32} />

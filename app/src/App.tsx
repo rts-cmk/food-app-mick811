@@ -2,13 +2,16 @@ import { Link, useLoaderData, NavLink } from 'react-router';
 import { Heart, Star, SlidersHorizontal } from 'lucide-react';
 import { searchProducts, type Product } from './util';
 import { useState } from 'react';
+import SearchOverlay from './SearchOverlay';
 
 const App = () => {
   const { products } = useLoaderData()
   const [productList, setProductList] = useState(products)
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <>
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <header>
         <figure>
           <img src='/logo.png' alt='logo' />
@@ -29,7 +32,7 @@ const App = () => {
             placeholder='Search'
             onChange={(e) => setProductList(searchProducts(e.target.value))}
           />
-          <button>
+          <button onClick={() => setIsSearchOpen(true)} aria-label="Open advanced search">
             <SlidersHorizontal stroke="#fff" />
           </button>
         </section>
