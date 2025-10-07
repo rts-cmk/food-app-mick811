@@ -37,10 +37,10 @@ export default function ProductDetail() {
                     <h2>{product.name} {product.summary}</h2>
                 </figcaption>
                 <p className='rating'>
-                  <div className="rating-container">
-                    <Star stroke="#FF9633" fill="#FF9633" />
-                    {product.rating}
-                  </div>
+                    <div className="rating-container">
+                        <Star stroke="#FF9633" fill="#FF9633" />
+                        {product.rating}
+                    </div>
                 </p>
             </figure>
 
@@ -65,7 +65,7 @@ export default function ProductDetail() {
                 <div className="portion-counter">
                     <h3>Portion</h3>
                     <div className="portion-controls">
-                        <button 
+                        <button
                             className="portion-btn"
                             onClick={handleDecrement}
                             aria-label="Decrease portion"
@@ -73,7 +73,7 @@ export default function ProductDetail() {
                             <Minus size={24} strokeWidth={3} />
                         </button>
                         <span className="portion-count">{portionCount}</span>
-                        <button 
+                        <button
                             className="portion-btn"
                             onClick={handleIncrement}
                             aria-label="Increase portion"
