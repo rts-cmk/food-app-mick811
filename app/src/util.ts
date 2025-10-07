@@ -98,6 +98,10 @@ export const ProductSearch = new Fuse(data, {
     threshold: 0.4,
 });
 
-export const searchProducts = (query: string) => {
-    return ProductSearch.search(query);
+export const searchProducts = (query: string): Product[] => {
+    if (!query.trim()) {
+        return data;
+    }
+    const results = ProductSearch.search(query);
+    return results.map(result => result.item);
 }

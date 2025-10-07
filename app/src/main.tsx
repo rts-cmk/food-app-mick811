@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       if(!products) {
         throw new Response("Not Found", { status: 404 });
       }
-      return products;
+      return { products };
     }
   },
   {
