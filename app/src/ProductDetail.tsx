@@ -38,10 +38,10 @@ export default function ProductDetail() {
                         <h2>{product.name} {product.summary}</h2>
                     </figcaption>
                     <p className='rating'>
-                        <div className="rating-container">
+                        <span className="rating-container">
                             <Star stroke="#FF9633" fill="#FF9633" />
                             {product.rating}
-                        </div>
+                        </span>
                     </p>
                 </figure>
 
