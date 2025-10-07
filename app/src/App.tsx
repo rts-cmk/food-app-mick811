@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from 'react-router';
-import { Heart, Star } from 'lucide-react';
+import { Heart, Star, SlidersHorizontal } from 'lucide-react';
 import { type Product } from './util';
 
 const App = () => {
@@ -20,6 +20,12 @@ const App = () => {
           </Link>
         </div>
       </header>
+      <section className='search-bar'>
+        <input type='text' placeholder='Search' />
+        <button>
+          <SlidersHorizontal stroke="#fff" />
+        </button>
+      </section>
       <ul className='products'>
         {products.map((product) => (
           <li key={product.id}>
@@ -33,10 +39,10 @@ const App = () => {
                   </figcaption>
                 </figure>
                 <p className='rating'>
-                  <div className="rating-container">
+                  <span className="rating-container">
                     <Star stroke="#FF9633" fill="#FF9633" />
                     {product.rating}
-                  </div>
+                  </span>
                   <Heart stroke="#EF2A39" />
                 </p>
               </Link>
