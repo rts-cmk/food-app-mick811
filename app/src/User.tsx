@@ -1,20 +1,121 @@
 import { useLoaderData, useNavigate } from "react-router";
-import { ArrowLeft, Settings, PenSquare, LogOut, Search } from "lucide-react";
+import { ArrowLeft, Settings, PenSquare, LogOut, Search, Save, X } from "lucide-react";
 import { type User } from "./util";
 import { useState } from "react";
 import SearchOverlay from "./SearchOverlay";
 
+const EditProfileMode = ({ 
+    user, 
+    onSave, 
+    onCancel 
+}: { 
+    user: User; 
+    onSave: (updatedUser: User) => void;
+    onCancel: () => void;
+}) => {
+    const [formData, setFormData] = useState({
+        name: user.name,
+        email: user.email,
+        address: user.address || '',
+        password: user.password
+    });
+
+    const handleSubmit = () => {
+        const updatedUser = { ...user, ...formData };
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+        onSave(updatedUser);
+    };
+
+    return (
+        <div className="user-info">
+            <fieldset className="form-group">
+                <legend>Name</legend>
+                <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="edit-input"
+                />
+            </fieldset>
+
+            <fieldset className="form-group">
+                <legend>Email</legend>
+                <input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="edit-input"
+                />
+            </fieldset>
+
+            <fieldset className="form-group">
+                <legend>Delivery address</legend>
+                <input
+                    type="text"
+                    value={formData.address}
+                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                    className="edit-input"
+                />
+            </fieldset>
+
+            <fieldset className="form-group">
+                <legend>Password</legend>
+                <input
+                    type="password"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="edit-input"
+                />
+            </fieldset>
+
+            <div className="user-actions">
+                <button 
+                    onClick={handleSubmit}
+                    className="edit-profile-btn"
+                    aria-label="Save profile"
+                >
+                    Save Changes
+                    <Save size={20} />
+                </button>
+
+                <button 
+                    onClick={onCancel}
+                    className="logout-btn"
+                    aria-label="Cancel editing"
+                >
+                    Cancel
+                    <X size={20} />
+                </button>
+            </div>
+        </div>
+    );
+};
+
 export default function UserProfile() {
-    const user = useLoaderData() as User;
+    const loadedUser = useLoaderData() as User;
     const navigate = useNavigate();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [user, setUser] = useState<User>(() => {
+        const savedUser = localStorage.getItem('user');
+        return savedUser ? JSON.parse(savedUser) : loadedUser;
+    });
 
     const handleBack = () => {
         navigate(-1);
     };
 
     const handleEditProfile = () => {
-        console.log("Edit profile clicked");
+        setIsEditing(true);
+    };
+
+    const handleSaveProfile = (updatedUser: User) => {
+        setUser(updatedUser);
+        setIsEditing(false);
+    };
+
+    const handleCancelEdit = () => {
+        setIsEditing(false);
     };
 
     const handleLogout = () => {
@@ -67,47 +168,55 @@ export default function UserProfile() {
                 </div>
             </div>
 
-            <div className="user-info">
-                <fieldset className="form-group">
-                    <legend>Name</legend>
-                    <div className="value">{user?.name || ""}</div>
-                </fieldset>
+            {isEditing ? (
+                <EditProfileMode 
+                    user={user}
+                    onSave={handleSaveProfile}
+                    onCancel={handleCancelEdit}
+                />
+            ) : (
+                <div className="user-info">
+                    <fieldset className="form-group">
+                        <legend>Name</legend>
+                        <div className="value">{user?.name || ""}</div>
+                    </fieldset>
 
-                <fieldset className="form-group">
-                    <legend>Email</legend>
-                    <div className="value">{user?.email || ""}</div>
-                </fieldset>
+                    <fieldset className="form-group">
+                        <legend>Email</legend>
+                        <div className="value">{user?.email || ""}</div>
+                    </fieldset>
 
-                <fieldset className="form-group">
-                    <legend>Delivery address</legend>
-                    <div className="value">{user?.address || ""}</div>
-                </fieldset>
+                    <fieldset className="form-group">
+                        <legend>Delivery address</legend>
+                        <div className="value">{user?.address || ""}</div>
+                    </fieldset>
 
-                <fieldset className="form-group">
-                    <legend>Password</legend>
-                    <div className="value password-dots">{"●".repeat(user?.password?.length || 8)}</div>
-                </fieldset>
+                    <fieldset className="form-group">
+                        <legend>Password</legend>
+                        <div className="value password-dots">{"●".repeat(user?.password?.length || 8)}</div>
+                    </fieldset>
 
-                <div className="user-actions">
-                    <button 
-                        onClick={handleEditProfile}
-                        className="edit-profile-btn"
-                        aria-label="Edit profile"
-                    >
-                        Edit Profile
-                        <PenSquare size={20} />
-                    </button>
+                    <div className="user-actions">
+                        <button 
+                            onClick={handleEditProfile}
+                            className="edit-profile-btn"
+                            aria-label="Edit profile"
+                        >
+                            Edit Profile
+                            <PenSquare size={20} />
+                        </button>
 
-                    <button 
-                        onClick={handleLogout}
-                        className="logout-btn"
-                        aria-label="Log out"
-                    >
-                        Log out
-                        <LogOut size={20} />
-                    </button>
+                        <button 
+                            onClick={handleLogout}
+                            className="logout-btn"
+                            aria-label="Log out"
+                        >
+                            Log out
+                            <LogOut size={20} />
+                        </button>
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 }
